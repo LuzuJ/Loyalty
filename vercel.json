@@ -2,7 +2,7 @@
     "version": 2,
     "builds": [
       {
-        "public": true,
+        "public": "public/server.js",
         "use": "@vercel/node",
         "config": {
           "installCommand": "npm install && npm run build"
