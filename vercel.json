@@ -2,7 +2,7 @@
     "version": 2,
     "builds": [
       {
-        "src": "public/server.js",
+        "public": "public/server.js",
         "use": "@vercel/node",
         "config": {
           "installCommand": "npm install && npm run build"
@@ -11,7 +11,7 @@
     ],
     "routes": [
       {
-        "src": "/(.*)",
+        "src": "/api/(.*)",
         "dest": "/public/server.js"
       }
     ]
