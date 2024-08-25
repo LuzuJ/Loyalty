@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
  "scripts": {
+  "postinstall": "prisma generate",
     "build": "prisma generate && tsc",  
     "start": "node public/server.js"  
   },
