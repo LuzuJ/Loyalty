@@ -1,9 +1,11 @@
 {
   "name": "loyalty-zettas",
   "version": "1.0.0",
-  "main": "server.ts",
+  "main": "index.js",
   "scripts": {
-    "start": "ts-node src/server.ts",
+    "postinstall": "prisma generate",
+    "build": "prisma generate && tsc",
+    "start": "node public/server.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:db": "prisma db push"
