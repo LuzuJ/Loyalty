@@ -1,8 +1,8 @@
-import { Request, Response, NextFunction } from 'express';
+import { ServerResponse } from 'http';
 
-const errorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
-  const status = err.status || 500;
-  res.status(status).json({ message: err.message || 'Something went wrong' });
+// Para manejar errores, funciona como un middleware de 'Express'
+export const handleError = (res: ServerResponse, statusCode: number, message: string) => {
+  res.statusCode = statusCode;
+  res.setHeader('Content-Type', 'application/json');
+  res.end(JSON.stringify({ status: statusCode, message }));
 };
-
-export default errorHandler;

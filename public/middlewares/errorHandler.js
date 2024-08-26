@@ -1,7 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const errorHandler = (err, req, res, next) => {
-    const status = err.status || 500;
-    res.status(status).json({ message: err.message || 'Something went wrong' });
+exports.handleError = void 0;
+const handleError = (res, statusCode, message) => {
+    res.statusCode = statusCode;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({ status: statusCode, message }));
 };
-exports.default = errorHandler;
+exports.handleError = handleError;

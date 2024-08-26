@@ -1,24 +1,43 @@
-import { Router } from 'express';
-import { getQualificationsByID, createQualifications, updateQualifications, deleteQualification, getQualificationsIDs, getAllQualifications} from '../controllers/qualificationController';
+import { CustomRequest, CustomResponse } from '../interfaces/customReqRes';
+import { getQualificationsByID, createQualifications, updateQualifications, deleteQualification, getQualificationsIDs, getAllQualifications } from '../controllers/qualificationController';
 import { validateCreate } from '../validators/qualificationValidator';
-const router = Router();
 
-//Para todas las IDs de Loyalty
-router.get('/qualificationsIDs', getQualificationsIDs);
+export const handleQualificationsRoute = (req: CustomRequest, res: CustomResponse) => {
+  const { method, url } = req;
 
-//Para toda la información o el de un ID especificado 
-router.get('/qualifications/:id',getQualificationsByID);
+  if (method === 'GET' && url === '/api/qualificationsIDs') {
+    return getQualificationsIDs(req, res);
+  }
 
-//Get para todo
-router.get('/qualificationsAll', getAllQualifications);
+  if (method === 'GET' && url?.startsWith('/api/qualifications/')) {
+    const id = url.split('/').pop();
+    if (id) {
+      return getQualificationsByID(req, res);
+    }
+  }
 
+  if (method === 'GET' && url === '/api/qualificationsAll/') {
+    return getAllQualifications(req, res);
+  }
 
-router.post('/qualifications',validateCreate, createQualifications);
+  if (method === 'POST' && url === '/api/qualifications') {
+    return validateCreate(req, res, () => createQualifications(req, res));
+  }
 
-//Para editar todo un ID
-router.put('/qualifications/:id',validateCreate, updateQualifications);
+  if (method === 'PUT' && url?.startsWith('/api/qualifications/')) {
+    const id = url.split('/').pop();
+    if (id) {
+      return validateCreate(req, res, () => updateQualifications(req, res));
+    }
+  }
 
+  if (method === 'DELETE' && url?.startsWith('/api/qualifications/')) {
+    const id = url.split('/').pop();
+    if (id) {
+      return deleteQualification(req, res);
+    }
+  }
 
-router.delete('/qualifications/:id', deleteQualification);
-
-export default router;
+  res.statusCode = 404;
+  res.end(JSON.stringify({ status: res.status, message: 'Solicitud Incorrecta' }));
+};

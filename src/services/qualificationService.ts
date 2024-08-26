@@ -1,19 +1,18 @@
 import prisma from '../utils/prismaClient';
 
 export const getQualificationsIDs = async () => {
- try {
-  return await prisma.qualification.findMany({
-    select: { id: true },
-  });
- } catch (error: any) {
-  console.error('Error al obtener las IDs de qualifications:', error);
-  throw new Error('No se pudieron obtener las IDs de qualifications');
- }
+  try {
+    return await prisma.qualification.findMany({
+      select: { id: true },
+    });
+  } catch (error: any) {
+    console.error('Error al obtener las IDs de qualifications:', error);
+    throw new Error('No se pudieron obtener las IDs de qualifications');
+  }
 };
 
 export const getQualificationsByID = async (id: number) => {
   try {
-    // Verificar si el ID existe
     const qualification = await prisma.qualification.findUnique({
       where: { id },
       include: {
@@ -25,7 +24,7 @@ export const getQualificationsByID = async (id: number) => {
     });
 
     if (!qualification) {
-      return null; // Devuelve null si no existe
+      return null; 
     }
 
     return qualification;
@@ -74,13 +73,11 @@ export const createQualifications = async (data: any) => {
 };
 
 export const updateQualifications = async (id: number, data: any) => {
-  // Verificar si el ID existe
   const qualification = await getQualificationsByID(id);
   if (!qualification) {
-    return null; 
+    return null;
   }
 
-  // Primero, actualiza las calificaciones existentes si los IDs de calificación están presentes en el cuerpo de la solicitud.
   const updatedQualification = await prisma.qualification.update({
     where: { id },
     data: {
@@ -121,10 +118,9 @@ export const updateQualifications = async (id: number, data: any) => {
 };
 
 export const deleteQualification = async (id: number) => {
-  // Verificar si el ID existe
   const qualification = await getQualificationsByID(id);
   if (!qualification) {
-    return null; 
+    return null;
   }
 
   return await prisma.qualification.delete({
